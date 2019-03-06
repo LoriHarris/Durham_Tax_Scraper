@@ -30,7 +30,7 @@ def init_browser():
 
 
 def tax():
-    address = 'Holston'
+    address = 'Ripley St'
     browser = init_browser()
     url = 'https://property.spatialest.com/nc/durham/#/'
     browser.visit(url)
@@ -113,18 +113,21 @@ def tax():
             print(len(prop_list))
             browser.click_link_by_partial_href('spatialest')
             time.sleep(2)
-        df = pd.DataFrame(columns=['Address', 'Price', 'Date'])
-        df['Address']=address
-        df['Price']=price
-        df['Date']=date
+        # df = pd.DataFrame(columns=['Address', 'Price', 'Date'])
+        # df['Address']=address
+        # df['Price']=price
+        # df['Date']=date
+        df = {
+        'Address': address, 
+        'Price': price, 
+        'Date': date,
+        }
         
-    return df;
+    return df
 
 
 # In[16]:
 
-
-tax()
 
 
 # In[14]:
