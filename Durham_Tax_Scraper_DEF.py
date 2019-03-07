@@ -12,7 +12,7 @@ import pymongo
 import requests
 from splinter.exceptions import ElementDoesNotExist
 import pandas as pd
-
+import cgi
 
 # In[3]:
 
@@ -21,8 +21,8 @@ import pandas as pd
 
 def init_browser():
 
-        executable_path = {"executable_path": "chromedriver.exe"}
-        return Browser("chrome", **executable_path, headless=False)
+    executable_path = {"executable_path": "chromedriver.exe"}
+    return Browser("chrome", **executable_path, headless=False)
 
 
 
@@ -30,7 +30,7 @@ def init_browser():
 
 
 def tax():
-    address = 'Ripley St'
+    address = "Ripley St" 
     browser = init_browser()
     url = 'https://property.spatialest.com/nc/durham/#/'
     browser.visit(url)
@@ -113,14 +113,18 @@ def tax():
             print(len(prop_list))
             browser.click_link_by_partial_href('spatialest')
             time.sleep(2)
-        # df = pd.DataFrame(columns=['Address', 'Price', 'Date'])
-        # df['Address']=address
-        # df['Price']=price
-        # df['Date']=date
+        df1 = pd.DataFrame(columns=['Address', 'Price', 'Date'])
+        df1['Address']=address
+        df1['Price']=price
+        df1['Date']=date
+        table = df1.to_html(classes="table")
+        table.replace('\n', '')
+        df1.to_html('table.html')
         df = {
         'Address': address, 
         'Price': price, 
         'Date': date,
+        'Table': table,
         }
         
     return df
