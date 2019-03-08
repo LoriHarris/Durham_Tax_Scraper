@@ -12,9 +12,10 @@ import pymongo
 import requests
 from splinter.exceptions import ElementDoesNotExist
 import pandas as pd
-import cgi
-
+from flask_pymongo import PyMongo
+from flask import Flask
 # In[3]:
+
 
 
 
@@ -30,7 +31,11 @@ def init_browser():
 
 
 def tax():
-    address = "Ripley St" 
+    app = Flask(__name__)
+    mongo = PyMongo(app, uri="mongodb://localhost:27017/tax_app")
+
+    address = mongo.db.input.distinct('Query')
+    # address = "Ripley St" 
     browser = init_browser()
     url = 'https://property.spatialest.com/nc/durham/#/'
     browser.visit(url)

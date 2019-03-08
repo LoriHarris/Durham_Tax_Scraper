@@ -18,10 +18,10 @@
   <div class="container text-center">
     <h1 class="jumbotron">Durham Tax Scraper</h1> 
     <p>Find the most recent sales according to the tax site.</p>
-    <form name="search" action="/scrape" method="get">
-      Search: <input type="text" name="searchbox">
-      <input type="submit" value="Submit">
-      </form> 
+    <form method="POST">
+      <input name="text">
+      <input type="submit">
+  </form>
     <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Get Sales Info!</a></p>
   </div>
   <div class="container">

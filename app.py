@@ -1,8 +1,8 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from flask_pymongo import PyMongo
 import Durham_Tax_Scraper_DEF
 import pymongo
-import cgi
+
 
 app = Flask(__name__)
 # Create connection variable
@@ -18,10 +18,17 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/tax_app")
 
 @app.route("/")
 def index():
-    form = cgi.FieldStorage()
-    address =  form.getvalue('searchbox')
+  
     tax_info = mongo.db.collection.find_one()
-    return render_template("index.html", data=tax_info, address=address)
+
+    return render_template("index.html", data=tax_info)
+
+@app.route('/', methods=['POST'])
+def my_form_post():
+    address1 = request.form['text']
+    address = {'Query': address1}
+    mongo.db.input.update({}, address, upsert=True)
+    return redirect("/", code=302)
 
 @app.route("/scrape")
 def scraper():
