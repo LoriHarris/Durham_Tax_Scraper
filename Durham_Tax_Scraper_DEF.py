@@ -98,20 +98,30 @@ def tax():
                 time.sleep(3)
                 property_link3 = browser.html
                 prop_link = BeautifulSoup(property_link3, 'html.parser')
-                prop_mailing = prop_link.find('div', class_='mailing')
-                prop_mailing1.append(prop)
-                address.append(prop)
-                prop_table = prop_link.findAll('table')[3]
-                price_table = prop_table.findAll('td')[1]
-                date_table = prop_table.findAll('td')[0]
-                for x in price_table:
-                    price.append(x)
-                for y in date_table:
-                    date.append(y)
-                browser.click_link_by_partial_href('spatialest')
-                time.sleep(3)
-                prop_list.remove(prop)
-                print(len(prop_list))
+                prop_address = prop_link.find('div', class_='location text-highlight')
+                prop_address1 = prop_address.find('span', class_='value')
+                prop_address
+                if prop_address1.text == prop:
+                    
+                    prop_mailing = prop_link.find('div', class_='mailing')
+                    prop_mailing1.append(prop)
+                    address.append(prop)
+                    prop_table = prop_link.findAll('table')[3]
+                    price_table = prop_table.findAll('td')[1]
+                    date_table = prop_table.findAll('td')[0]
+                    for x in price_table:
+                        price.append(x)
+                    for y in date_table:
+                        date.append(y)
+                    browser.click_link_by_partial_href('spatialest')
+                    time.sleep(3)
+                    prop_list.remove(prop)
+                    print(len(prop_list))
+                else:
+                    browser.click_link_by_partial_href('spatialest')
+                    time.sleep(3)
+                    prop_list.remove(prop)
+                    print(len(prop_list))
         except:
 
             prop_list.remove(prop)
@@ -119,16 +129,21 @@ def tax():
             browser.click_link_by_partial_href('spatialest')
             time.sleep(2)
         df1 = pd.DataFrame(columns=['Address', 'Price', 'Date'])
+        date1 = ['No Recent Sales' if x=='2016 Q1' else x for x in date]
+        # Need to add in so that all Q1-4 are swapped out, and wrong price not grabbed if no sales
         df1['Address']=address
         df1['Price']=price
-        df1['Date']=date
-        table = df1.to_html(classes="table")
+        df1['Date']=date1
+        table = df1.to_html(classes="table table-striped")
         table.replace('\n', '')
         df1.to_html('table.html')
+        
+
+
         df = {
         'Address': address, 
         'Price': price, 
-        'Date': date,
+        'Date': date1,
         'Table': table,
         }
         
