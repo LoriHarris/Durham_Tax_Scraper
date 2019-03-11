@@ -27,14 +27,14 @@ def index():
 def my_form_post():
     address1 = request.form['text']
     address = {'Query': address1}
-    mongo.db.input.insert({}, address, upsert=True)
+    mongo.db.input.update({}, address, upsert=True)
     return redirect("/", code=302)
 
 @app.route("/scrape")
 def scraper():
     # df = mongo.db.df
     df = Durham_Tax_Scraper_DEF.tax()
-    mongo.db.collection.insert({}, df, upsert=True)
+    mongo.db.collection.update({}, df, upsert=True)
     
     return redirect("/", code=302)
 
